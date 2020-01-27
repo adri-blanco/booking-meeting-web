@@ -17,5 +17,24 @@ export default {
       const rooms = await RoomsService.getRooms();
       dispatch.rooms.setRooms(rooms);
     },
+    async bookRoom(payload) {
+      const {
+        authId,
+        startHour,
+        endHour,
+        roomId,
+        authName,
+        eventName,
+      } = payload;
+      const response = await RoomsService.bookRoom({
+        authId,
+        startHour,
+        endHour,
+        roomId,
+        authName,
+        eventName,
+      });
+      return response;
+    },
   }),
 };

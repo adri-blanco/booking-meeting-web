@@ -7,6 +7,7 @@ import DatePickerFieldDefault from '../../reusable-components/form/DatePickerFie
 import HourPickerFieldDefault from '../../reusable-components/form/HourPickerFieldDefault';
 import SelectFieldDefault from '../../reusable-components/form/SelectFieldDefault';
 import TextInputFieldDefault from '../../reusable-components/form/TextInputFieldDefault';
+import ButtonField from '../../reusable-components/buttons/ButtonField';
 
 const styles = {
   container: {
@@ -20,19 +21,6 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     width: '100%',
-  },
-  input: {
-    padding: '8px',
-    fontSize: '16px',
-  },
-  select: {
-    textIndent: '8px',
-    fontSize: '16px',
-  },
-  label: {
-    marginTop: '8px',
-    marginBottom: '2px',
-    marginLeft: '4px',
   },
   button: {
     fontSize: '16px',
@@ -85,6 +73,7 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
               name='userId'
               label='User ID'
               placeholder='User ID'
+              required
             />
           </div>
           <div className={classes.field}>
@@ -97,8 +86,8 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
           <div className={classes.field}>
             <SelectFieldDefault
               name='room'
-              label='room'
-              text='room'
+              label='Room'
+              text='Room'
               options={parseRooms(rooms)}
               required
             />
@@ -106,40 +95,34 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
           <div className={classes.field}>
             <DatePickerFieldDefault
               name='date'
-              label='date'
+              label='Room'
               className={classes.selectField}
             />
           </div>
           <div className={classes.field}>
             <HourPickerFieldDefault
               name='startHour'
-              label='startHour'
+              label='Start Hour'
               className={classes.selectField}
             />
           </div>
           <div className={classes.field}>
             <HourPickerFieldDefault
               name='endHour'
-              label='endHour'
+              label='End Hour'
               className={classes.selectField}
             />
           </div>
           <div className={classes.buttons}>
-            <button
+            <ButtonField
+              variant='contained'
               type='submit'
-              disabled={submitting || pristine}
+              color='primary'
               className={classes.button}
+              disabled={submitting || pristine}
             >
               Book
-            </button>
-            <button
-              type='button'
-              onClick={form.reset}
-              disabled={submitting || pristine}
-              className={classes.button}
-            >
-              Cancel
-            </button>
+            </ButtonField>
           </div>
         </form>
       )}
