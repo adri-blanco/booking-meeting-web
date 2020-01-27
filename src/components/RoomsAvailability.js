@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import withStyles from 'react-jss';
+import { withStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
 import { dispatch } from '../state/store';
 
