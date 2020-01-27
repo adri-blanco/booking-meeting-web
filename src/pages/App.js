@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import withStyles from 'react-jss';
+import { withStyles } from '@material-ui/core/styles';
 import { Provider } from 'react-redux';
-import Book from '../components/Book';
+import Book from '../components/Book/Book';
 import RoomsAvailability from '../components/RoomsAvailability';
 import store from '../state/store';
 
