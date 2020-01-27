@@ -8,7 +8,6 @@ import store from '../state/store';
 
 const styles = {
   container: {
-    width: '100vw',
     display: 'flex',
     flexFlow: 'column',
     alignContent: 'center',
