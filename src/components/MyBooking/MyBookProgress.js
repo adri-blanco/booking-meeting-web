@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { lighten, withStyles } from '@material-ui/core/styles';
 import { parseTime, getDifferenceInMinutes } from '../../utils/date';
+import ButtonField from '../../reusable-components/buttons/ButtonField';
 
 const styles = {
   container: {
@@ -11,6 +12,10 @@ const styles = {
   values: {
     display: 'flex',
     justifyContent: 'space-between',
+  },
+  infoContainer: {
+    display: 'flex',
+    flexDirection: 'column',
   },
 };
 
@@ -32,28 +37,47 @@ const getPercentComplete = (startDate, endDate) => {
   return normalizedValue;
 };
 
-const MyBookProgress = ({ classes, startDate, endDate }) => (
-  <div className={classes.container}>
-    <div className={classes.background}>
-      <BorderLinearProgress
-        className={classes.margin}
-        variant='determinate'
-        color='secondary'
-        value={getPercentComplete(startDate, endDate)}
-      />
-      <div className={classes.values}>
-        <span>{parseTime(startDate)}</span>
-        <span>
-          {`You have ${getDifferenceInMinutes(
-            new Date(),
-            endDate
-          )} minutes left`}
-        </span>
-        <span>{parseTime(endDate)}</span>
+const MyBookProgress = ({ classes, startDate, endDate }) => {
+  const [extending, setExtending] = useState(false);
+
+  const onClick = () => {
+    setExtending(true);
+  };
+  return (
+    <div className={classes.container}>
+      <div className={classes.background}>
+        <BorderLinearProgress
+          className={classes.margin}
+          variant='determinate'
+          color='secondary'
+          value={getPercentComplete(startDate, endDate)}
+        />
+        <div className={classes.values}>
+          <span>{parseTime(startDate)}</span>
+          <div className={classes.infoContainer}>
+            <span>
+              {`You have ${getDifferenceInMinutes(
+                new Date(),
+                endDate
+              )} minutes left`}
+            </span>
+            <ButtonField
+              variant='contained'
+              type='button'
+              color='primary'
+              disabled={extending}
+              loading={extending}
+              onClick={onClick}
+            >
+              +15 minutes
+            </ButtonField>
+          </div>
+          <span>{parseTime(endDate)}</span>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 MyBookProgress.propTypes = {
   classes: PropTypes.object.isRequired,
