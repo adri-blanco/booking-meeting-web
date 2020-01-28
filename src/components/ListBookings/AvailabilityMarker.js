@@ -13,11 +13,18 @@ const styles = {
   },
   unavailable: {
     backgroundColor: 'red',
-  }
+  },
 };
 
 const AvailabilityMarker = ({ classes, availability }) => (
-  <div className={classNames(classes.container, { [classes.available]: availability }, { [classes.unavailable]: !availability })} title='Availability' />
+  <div
+    className={classNames(
+      classes.container,
+      { [classes.available]: availability },
+      { [classes.unavailable]: !availability }
+    )}
+    title='Availability'
+  />
 );
 
 AvailabilityMarker.propTypes = {

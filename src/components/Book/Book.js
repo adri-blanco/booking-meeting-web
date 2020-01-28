@@ -2,7 +2,6 @@ import React, { useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
-import BookHeader from './BookHeader';
 import BookForm from './BookForm';
 
 const styles = {
@@ -15,6 +14,13 @@ const styles = {
     background: '#efefef',
     borderRadius: '5px',
     padding: '24px',
+  },
+  text: {
+    color: 'black',
+    textAlign: 'center',
+    fontSize: '24px',
+    marginTop: '16px',
+    marginBottom: '16px',
   },
 };
 
@@ -52,7 +58,7 @@ const Book = ({ classes }) => {
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
-        <BookHeader />
+        <h4 className={classes.text}>Book a room</h4>
         <BookForm rooms={rooms} onSubmit={onSubmit} />
       </div>
     </div>

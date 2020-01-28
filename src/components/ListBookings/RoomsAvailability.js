@@ -9,13 +9,12 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import { dispatch } from '../state/store';
+import { dispatch } from '../../state/store';
 import AvailabilityMarker from './AvailabilityMarker';
 
 const styles = {
   container: {
     height: '100%',
-    width: '60%',
     margin: '10px',
     display: 'flex',
     flexFlow: 'column',
