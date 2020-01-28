@@ -8,14 +8,13 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
 import { dispatch } from '../../state/store';
 import AvailabilityMarker from './AvailabilityMarker';
 
 const styles = {
   container: {
     height: '100%',
-    margin: '10px',
+    margin: '16px',
     display: 'flex',
     flexFlow: 'column',
   },
@@ -31,7 +30,7 @@ const RoomsAvailability = ({ classes }) => {
   const rooms = useSelector(state => state.rooms.rooms);
   return (
     <div className={classes.container}>
-      <TableContainer component={Paper}>
+      <TableContainer>
         <Table className={classes.table} size='small'>
           <TableHead>
             <TableRow>

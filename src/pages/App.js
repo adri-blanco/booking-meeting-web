@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { Provider } from 'react-redux';
+import Divider from '@material-ui/core/Divider';
 import Book from '../components/Book/Book';
 import RoomsAvailability from '../components/ListBookings/RoomsAvailability';
 import MyBooking from '../components/MyBooking/MyBooking';
@@ -13,7 +14,9 @@ const styles = {
     flexFlow: 'column',
     alignContent: 'center',
     justifyContent: 'center',
-    margin: '10px',
+    width: '100vw',
+    height: '100vh',
+    // background: '#f7ddc6',
   },
   contentContainer: {
     display: 'flex',
@@ -22,6 +25,8 @@ const styles = {
   },
   rightContainer: {
     width: '60%',
+    marginLeft: '16px',
+    marginRight: '24px',
   },
   text: {
     textAlign: 'center',
@@ -34,6 +39,7 @@ const App = ({ classes }) => (
       <h2 className={classes.text}>Welcome to the Booking Meeting App</h2>
       <div className={classes.contentContainer}>
         <Book />
+        <Divider orientation='vertical' />
         <div className={classes.rightContainer}>
           <RoomsAvailability />
           <MyBooking

@@ -7,13 +7,6 @@ import { parseTime, getDifferenceInMinutes } from '../../utils/date';
 const styles = {
   container: {
     borderRadius: '10px',
-    padding: '10px',
-  },
-  available: {
-    backgroundColor: 'green',
-  },
-  unavailable: {
-    backgroundColor: 'red',
   },
   values: {
     display: 'flex',

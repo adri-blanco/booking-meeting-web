@@ -8,12 +8,11 @@ const styles = {
   container: {
     height: '100%',
     width: '40%',
-    margin: '10px',
+    margin: '16px',
   },
   innerContainer: {
-    background: '#efefef',
-    borderRadius: '5px',
-    padding: '24px',
+    background: '#ffffff',
+    padding: '8px',
   },
   text: {
     color: 'black',

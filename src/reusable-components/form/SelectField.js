@@ -75,6 +75,7 @@ const SelectField = ({
         value={selectValue}
         onChange={handleChange}
         disabled={disabled}
+        variant='outlined'
         onFocus={onFocus}
         onBlur={onBlur}
       >

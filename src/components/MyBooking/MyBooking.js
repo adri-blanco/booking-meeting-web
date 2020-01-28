@@ -5,8 +5,8 @@ import MyBookProgress from './MyBookProgress';
 
 const styles = {
   container: {
-    borderRadius: '10px',
-    padding: '10px',
+    margin: '16px',
+    marginTop: '24px',
   },
   textHeader: {
     textAlign: 'center',

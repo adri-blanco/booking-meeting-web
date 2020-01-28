@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classnames from 'classnames';
 import TextField from '@material-ui/core/TextField';
-import InputLabel from '@material-ui/core/InputLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -51,12 +50,11 @@ const TextInputField = ({
   }, [value]);
   return (
     <div className={classnames(classes.textFieldContainer, className)}>
-      <InputLabel classes={{ root: classes.textLabel }} error={showError}>
-        {label}
-      </InputLabel>
       <TextField
         classes={{ root: classes.textInput }}
         value={inValue}
+        label={label}
+        variant='outlined'
         disabled={disabled}
         placeholder={placeholder}
         error={showError}

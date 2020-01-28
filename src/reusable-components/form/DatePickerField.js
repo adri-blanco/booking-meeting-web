@@ -56,6 +56,7 @@ const DatePickerField = ({
         <KeyboardDatePicker
           disableToolbar
           variant='inline'
+          inputVariant='outlined'
           format='dd/MM/yyyy'
           margin='normal'
           label={label}

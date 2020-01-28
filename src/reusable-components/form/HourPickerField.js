@@ -53,6 +53,7 @@ const HourPickerField = ({
         <TimePicker
           disableToolbar
           variant='inline'
+          inputVariant='outlined'
           format='hh:mm'
           margin='normal'
           label={label}
