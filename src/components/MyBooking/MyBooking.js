@@ -17,7 +17,7 @@ const MyBooking = ({ classes, room, startDate, endDate }) => (
   <div className={classes.container}>
     {room ? (
       <>
-        <h4 className={classes.textHeader}>My actual Booking</h4>
+        <h4 className={classes.textHeader}>My current Booking</h4>
         <h3 className={classes.textHeader}>{`${room.name} - ${room.floor}`}</h3>
         <MyBookProgress room={room} startDate={startDate} endDate={endDate} />
       </>
