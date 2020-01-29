@@ -2,32 +2,37 @@ const { getTimeFromUTCStringFormatDate } = require('./date');
 
 const isRoomAvailable = (room, when = Date.now()) => {
   const { meetings } = room;
-  const actualValue = meetings.reduce((accumulator, actual) => {
-    const dateIni = new Date(actual.startTime);
-    const dateEnd = new Date(actual.endTime);
 
+  const actualValue = meetings.reduce((accumulator, actual) => {
+    const dateIni = new Date(actual.startTime).getTime();
+    const dateEnd = new Date(actual.endTime).getTime();
     if (
       dateIni <= when &&
-      (!accumulator || dateIni > new Date(accumulator.startTime))
+      (!accumulator.startTime ||
+        dateIni > new Date(accumulator.startTime).getTime())
     ) {
       if (dateEnd > when) {
         return actual;
       }
-    } else if (!accumulator || dateIni < new Date(accumulator.startTime)) {
+    } else if (
+      !accumulator.startTime ||
+      dateIni < new Date(accumulator.startTime).getTime()
+    ) {
       return actual;
     }
     return accumulator;
   }, {});
-
   if (room.availability) {
     return {
       isAvailable: room.availability,
       time: actualValue && actualValue.startTime,
+      owner: actualValue && actualValue.owner,
     };
   }
   return {
     isAvailable: room.availability,
     time: actualValue && actualValue.endTime,
+    owner: actualValue && actualValue.owner,
   };
 };
 

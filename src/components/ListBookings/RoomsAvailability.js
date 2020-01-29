@@ -48,7 +48,11 @@ const RoomsAvailability = ({ classes }) => {
             {rooms.map(row => (
               <TableRow key={row.name}>
                 <TableCell className={classes.smallCell}>
-                  <AvailabilityMarker availability={row.isAvailable} />
+                  <AvailabilityMarker
+                    availability={row.isAvailable}
+                    owner={row.owner}
+                    time={row.time}
+                  />
                 </TableCell>
                 <TableCell component='th' scope='row'>
                   {row.name}
