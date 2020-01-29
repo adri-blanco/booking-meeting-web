@@ -51,10 +51,10 @@ const HourPickerField = ({
     <div className={classnames(classes.checkboxContainer, className)}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <TimePicker
-          disableToolbar
           variant='inline'
+          ampm={false}
           inputVariant='outlined'
-          format='hh:mm'
+          format='HH:MM'
           margin='normal'
           label={label}
           onFocus={onFocus}

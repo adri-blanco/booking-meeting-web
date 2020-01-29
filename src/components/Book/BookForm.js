@@ -8,6 +8,7 @@ import HourPickerFieldDefault from '../../reusable-components/form/HourPickerFie
 import SelectFieldDefault from '../../reusable-components/form/SelectFieldDefault';
 import TextInputFieldDefault from '../../reusable-components/form/TextInputFieldDefault';
 import ButtonField from '../../reusable-components/buttons/ButtonField';
+import { getLastUserUsed } from '../../utils/localStorage';
 
 const styles = {
   container: {
@@ -62,6 +63,7 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
       onSubmit={onSubmit}
       initialValues={{
         name: 'Meeting name',
+        userId: getLastUserUsed(),
         date: getDefaultDate(),
         startHour: getDefaultDate('start'),
         endHour: getDefaultDate('end'),

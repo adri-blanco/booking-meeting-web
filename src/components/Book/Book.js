@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import BookForm from './BookForm';
+import { setLastUserUsed } from '../../utils/localStorage';
 
 const styles = {
   container: {
@@ -39,6 +40,7 @@ const Book = ({ classes }) => {
       0
     );
     dateEnd.setHours(endHourDate.getHours(), endHourDate.getMinutes(), 0, 0);
+    setLastUserUsed(userId);
     const response = await dispatch.rooms.bookRoom({
       authId: userId,
       startHour: dateIni,

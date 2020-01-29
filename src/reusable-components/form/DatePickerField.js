@@ -54,7 +54,6 @@ const DatePickerField = ({
     <div className={classnames(classes.checkboxContainer, className)}>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <KeyboardDatePicker
-          disableToolbar
           variant='inline'
           inputVariant='outlined'
           format='dd/MM/yyyy'
