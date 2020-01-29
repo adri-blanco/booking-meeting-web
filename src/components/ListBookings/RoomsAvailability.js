@@ -24,9 +24,14 @@ const styles = {
 };
 
 const RoomsAvailability = ({ classes }) => {
+  async function fetchRooms() {
+    return dispatch.rooms.getRoomsAvailability({});
+  }
+
   useEffect(() => {
-    dispatch.rooms.getRooms();
-  });
+    fetchRooms();
+  }, []);
+
   const rooms = useSelector(state => state.rooms.rooms);
   return (
     <div className={classes.container}>
@@ -43,7 +48,7 @@ const RoomsAvailability = ({ classes }) => {
             {rooms.map(row => (
               <TableRow key={row.name}>
                 <TableCell className={classes.smallCell}>
-                  <AvailabilityMarker availability={false} />
+                  <AvailabilityMarker availability={row.isAvailable} />
                 </TableCell>
                 <TableCell component='th' scope='row'>
                   {row.name}

@@ -17,6 +17,10 @@ export default {
       const rooms = await RoomsService.getRooms();
       dispatch.rooms.setRooms(rooms);
     },
+    async getRoomsAvailability({ when }) {
+      const rooms = await RoomsService.getRoomsAvailability({ when });
+      dispatch.rooms.setRooms(rooms);
+    },
     async bookRoom(payload) {
       const {
         authId,
