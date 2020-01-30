@@ -43,8 +43,8 @@ const Book = ({ classes }) => {
     setLastUserUsed(userId);
     const response = await dispatch.rooms.bookRoom({
       authId: userId,
-      startHour: dateIni,
-      endHour: dateEnd,
+      startHour: dateIni.toISOString(),
+      endHour: dateEnd.toISOString(),
       roomId: room,
       authName: userId,
       eventName: name,

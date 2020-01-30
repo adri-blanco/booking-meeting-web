@@ -37,12 +37,14 @@ const getPercentComplete = (startDate, endDate) => {
   return normalizedValue;
 };
 
-const MyBookProgress = ({ classes, startDate, endDate }) => {
+const MyBookProgress = ({ classes, booking }) => {
   const [extending, setExtending] = useState(false);
-
   const onClick = () => {
     setExtending(true);
   };
+  const startDate = new Date(booking.startTime);
+  const endDate = new Date(booking.endTime);
+
   return (
     <div className={classes.container}>
       <div className={classes.background}>
@@ -50,29 +52,33 @@ const MyBookProgress = ({ classes, startDate, endDate }) => {
           className={classes.margin}
           variant='determinate'
           color='secondary'
-          value={getPercentComplete(startDate, endDate)}
+          value={
+            startDate && endDate ? getPercentComplete(startDate, endDate) : 0
+          }
         />
         <div className={classes.values}>
-          <span>{parseTime(startDate)}</span>
-          <div className={classes.infoContainer}>
-            <span>
-              {`You have ${getDifferenceInMinutes(
-                new Date(),
-                endDate
-              )} minutes left`}
-            </span>
-            <ButtonField
-              variant='contained'
-              type='button'
-              color='primary'
-              disabled={extending}
-              loading={extending}
-              onClick={onClick}
-            >
-              +15 minutes
-            </ButtonField>
-          </div>
-          <span>{parseTime(endDate)}</span>
+          {startDate && <span>{parseTime(startDate)}</span>}
+          {endDate && (
+            <div className={classes.infoContainer}>
+              <span>
+                {`You have ${getDifferenceInMinutes(
+                  new Date(),
+                  endDate
+                )} minutes left`}
+              </span>
+              <ButtonField
+                variant='contained'
+                type='button'
+                color='primary'
+                disabled={extending}
+                loading={extending}
+                onClick={onClick}
+              >
+                +15 minutes
+              </ButtonField>
+            </div>
+          )}
+          {endDate && <span>{parseTime(endDate)}</span>}
         </div>
       </div>
     </div>
@@ -81,13 +87,11 @@ const MyBookProgress = ({ classes, startDate, endDate }) => {
 
 MyBookProgress.propTypes = {
   classes: PropTypes.object.isRequired,
-  startDate: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  endDate: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  booking: PropTypes.object,
 };
 
 MyBookProgress.defaultProps = {
-  startDate: undefined,
-  endDate: undefined,
+  booking: {},
 };
 
 export default withStyles(styles)(MyBookProgress);

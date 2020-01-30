@@ -1,12 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { Provider } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import Divider from '@material-ui/core/Divider';
 import Book from '../components/Book/Book';
 import RoomsAvailability from '../components/ListBookings/RoomsAvailability';
 import MyBooking from '../components/MyBooking/MyBooking';
-import store from '../state/store';
 
 const styles = {
   container: {
@@ -33,8 +32,19 @@ const styles = {
   },
 };
 
-const App = ({ classes }) => (
-  <Provider store={store}>
+const App = ({ classes }) => {
+  const dispatch = useDispatch();
+  const [actualBooking, setActualBooking] = useState(undefined);
+  async function fetchData() {
+    setActualBooking(
+      await dispatch.rooms.getActualBooking({ user: 'adrian.lopez.fouz' })
+    );
+  }
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  return (
     <div className={classes.container}>
       <h2 className={classes.text}>Welcome to the Booking Meeting App</h2>
       <div className={classes.contentContainer}>
@@ -42,20 +52,12 @@ const App = ({ classes }) => (
         <Divider orientation='vertical' />
         <div className={classes.rightContainer}>
           <RoomsAvailability />
-          <MyBooking
-            room={{
-              id: 118428,
-              name: 'Tetris',
-              floor: '4th Floor',
-            }}
-            startDate={new Date(new Date().getTime() - 5 * 60 * 1000)}
-            endDate={new Date(new Date().getTime() + 10 * 60 * 1000)}
-          />
+          <MyBooking room={actualBooking} />
         </div>
       </div>
     </div>
-  </Provider>
-);
+  );
+};
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,

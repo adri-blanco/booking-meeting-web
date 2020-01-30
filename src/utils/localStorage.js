@@ -1,14 +1,11 @@
+/* eslint-disable import/prefer-default-export */
+
 const keyStorage = 'booking-meeting-web-user';
 
-function getLastUserUsed() {
+export function getLastUserUsed() {
   return localStorage.getItem(keyStorage) || '';
 }
 
-function setLastUserUsed(user) {
+export function setLastUserUsed(user) {
   localStorage.setItem(keyStorage, user);
 }
-
-module.exports = {
-  getLastUserUsed,
-  setLastUserUsed,
-};

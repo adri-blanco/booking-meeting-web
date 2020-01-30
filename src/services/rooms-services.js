@@ -2,51 +2,31 @@ import axios from './axios';
 import { isRoomAvailable, getMyBookings } from '../utils/rooms';
 import serverData from '../constants/server-constants';
 
-const buildGetBookingRequests = rooms => {
-  const startDate = new Date();
-  startDate.setHours(0, 0, 0, 0);
-
-  const params = {
-    utcStart: startDate.toISOString(),
-    // profileId: SERVER_PROFILE_ID,
-    pollingInterval: 122000,
-  };
-  return rooms.map(el => axios.get('/rooms', { ...params, roomId: el.id }));
-};
-
 export default {
   async getRooms() {
     const response = await axios.get('/rooms');
 
     return response.data;
   },
-  async getAuthGroup({ authId, roomId }) {
-    const data = await axios.post('/Display/AuthenticateGroup', {
-      roomId,
+  async getAuthGroup({ authId }) {
+    const data = await axios.get(`/user/${authId}`, {
       profileId: serverData.SERVER_PROFILE_ID,
       authId,
       isSecondaryAuth: false,
       connectionName: '',
     });
-    return data.Data1[0].GroupID;
+    return data.data;
   },
-  async bookRoom({ authId, startHour, endHour, roomId, authName, eventName }) {
-    const groupId = await this.getAuthGroup({ authId, roomId });
-    const response = await axios.post('/Display/AddBooking', {
-      roomId,
-      profileId: serverData.SERVER_PROFILE_ID,
-      isSecondaryAuth: false,
-      utcStart: startHour,
-      utcEnd: endHour,
-      groupId,
-      contactId: 0,
-      groupName: authName,
-      eventName,
-      attendance: 1,
-      connectionName: '',
+  async bookRoom({ authId, startHour, endHour, roomId, eventName }) {
+    const response = await axios.post('/book', {
+      user: authId,
+      room: roomId,
+      startTime: startHour,
+      endTime: endHour,
+      name: eventName,
     });
 
-    return response.Data[0];
+    return response.data;
   },
 
   async getRoomsAvailability({ when }) {
@@ -63,11 +43,9 @@ export default {
   async getMyBookings({ authId, time }) {
     const groupId = await this.getAuthGroup({
       authId,
-      roomId: this.getRooms()[0].id,
     });
-    const rooms = this.getRooms();
-    const data = await Promise.all(buildGetBookingRequests(rooms));
+    const rooms = await this.getRooms();
 
-    return getMyBookings(data, groupId, rooms, time);
+    return getMyBookings(rooms, groupId, time);
   },
 };

@@ -13,33 +13,45 @@ const styles = {
   },
 };
 
-const MyBooking = ({ classes, room, startDate, endDate }) => (
-  <div className={classes.container}>
-    {room ? (
-      <>
-        <h4 className={classes.textHeader}>My current Booking</h4>
-        <h3 className={classes.textHeader}>{`${room.name} - ${room.floor}`}</h3>
-        <MyBookProgress room={room} startDate={startDate} endDate={endDate} />
-      </>
-    ) : (
-      <div className={classes.textHeader}>
-        There are no bookings available now
-      </div>
-    )}
-  </div>
-);
+function getActualBooking(room) {
+  const now = new Date();
+  if (room) {
+    return room.meetings.filter(booking => {
+      return (
+        new Date(booking.startTime) <= now && new Date(booking.endTime) > now
+      );
+    });
+  }
+  return {};
+}
+const MyBooking = ({ classes, room }) => {
+  const actualBooking = getActualBooking(room);
+  return (
+    <div className={classes.container}>
+      {room ? (
+        <>
+          <h4 className={classes.textHeader}>My current Booking</h4>
+          <h3 className={classes.textHeader}>
+            {`${room.name} - ${room.floor}`}
+          </h3>
+          {<MyBookProgress booking={actualBooking[0]} />}
+        </>
+      ) : (
+        <div className={classes.textHeader}>
+          There are no bookings available now
+        </div>
+      )}
+    </div>
+  );
+};
 
 MyBooking.propTypes = {
   classes: PropTypes.object.isRequired,
   room: PropTypes.object,
-  startDate: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  endDate: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 };
 
 MyBooking.defaultProps = {
   room: undefined,
-  startDate: undefined,
-  endDate: undefined,
 };
 
 export default withStyles(styles)(MyBooking);

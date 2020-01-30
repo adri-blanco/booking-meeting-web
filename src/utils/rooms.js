@@ -1,6 +1,6 @@
-const { getTimeFromUTCStringFormatDate } = require('./date');
+/* eslint-disable import/prefer-default-export */
 
-const isRoomAvailable = (room, when = Date.now()) => {
+export const isRoomAvailable = (room, when = Date.now()) => {
   const { meetings } = room;
 
   const actualValue = meetings.reduce((accumulator, actual) => {
@@ -36,38 +36,15 @@ const isRoomAvailable = (room, when = Date.now()) => {
   };
 };
 
-const getMyBookings = (roomList, groupId, rooms) => {
-  const myBookings = [];
-  const now = Date.now();
-
-  const roomBookings = roomList.map(room => {
-    return room.Data1.filter(booking => booking.GroupID === groupId);
-  });
-
-  roomBookings.forEach((bookings, index) => {
-    if (bookings.length) {
-      bookings.forEach(booking => {
-        const endTime = getTimeFromUTCStringFormatDate(
-          booking.UTCReservedEndDateTime
-        );
-        if (endTime > now) {
-          myBookings.push({
-            roomName: rooms[index].name,
-            floor: rooms[index].floor,
-            eventName: booking.EventName,
-            startTime: getTimeFromUTCStringFormatDate(
-              booking.UTCReservedStartDateTime
-            ),
-            endTime,
-          });
-        }
-      });
+export const getMyBookings = (roomList, groupId) => {
+  const roomsBooked = roomList.reduce((rooms, actualRoom) => {
+    const bookings = actualRoom.meetings.filter(
+      booking => booking.owner === groupId.name
+    );
+    if (bookings.length > 0) {
+      rooms.push({ ...actualRoom, meetings: bookings });
     }
-  });
-  return myBookings;
-};
-
-module.exports = {
-  isRoomAvailable,
-  getMyBookings,
+    return rooms;
+  }, []);
+  return roomsBooked;
 };

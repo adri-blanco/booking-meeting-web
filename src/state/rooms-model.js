@@ -21,6 +21,27 @@ export default {
       const rooms = await RoomsService.getRoomsAvailability({ when });
       dispatch.rooms.setRooms(rooms);
     },
+    async getMyBookings({ user }) {
+      const myBookings = await RoomsService.getMyBookings({
+        authId: user,
+      });
+      return myBookings;
+    },
+    async getActualBooking({ user }) {
+      const myBookings = await RoomsService.getMyBookings({
+        authId: user,
+      });
+      const actualBooking = myBookings.find(booking => {
+        return booking.meetings.reduce((acc, value) => {
+          return (
+            acc ||
+            (new Date(value.startTime) <= new Date() &&
+              new Date(value.endTime) > new Date())
+          );
+        }, false);
+      }, {});
+      return actualBooking;
+    },
     async bookRoom(payload) {
       const {
         authId,
