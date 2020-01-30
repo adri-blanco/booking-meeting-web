@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { lighten, withStyles } from '@material-ui/core/styles';
@@ -38,13 +38,24 @@ const getPercentComplete = (startDate, endDate) => {
 };
 
 const MyBookProgress = ({ classes, booking }) => {
+  const startDate = new Date(booking.startTime);
+  const endDate = new Date(booking.endTime);
   const [extending, setExtending] = useState(false);
+  const [timeLeft, setTimeLeft] = useState(
+    getDifferenceInMinutes(endDate, new Date())
+  );
   const onClick = () => {
     setExtending(true);
   };
-  const startDate = new Date(booking.startTime);
-  const endDate = new Date(booking.endTime);
-
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const currentTime = getDifferenceInMinutes(endDate, new Date());
+      setTimeLeft(currentTime > 0 ? currentTime : 0);
+    }, 60000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
   return (
     <div className={classes.container}>
       <div className={classes.background}>
@@ -61,10 +72,9 @@ const MyBookProgress = ({ classes, booking }) => {
           {endDate && (
             <div className={classes.infoContainer}>
               <span>
-                {`You have ${getDifferenceInMinutes(
-                  new Date(),
-                  endDate
-                )} minutes left`}
+                {timeLeft > 0
+                  ? `You have ${timeLeft} minutes left`
+                  : 'This booking has expired'}
               </span>
               <ButtonField
                 variant='contained'

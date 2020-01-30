@@ -62,7 +62,7 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
     <Form
       onSubmit={onSubmit}
       initialValues={{
-        name: 'Meeting name',
+        name: 'Meeting',
         userId: getLastUserUsed(),
         date: getDefaultDate(),
         startHour: getDefaultDate('start'),
@@ -122,6 +122,7 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
               color='primary'
               className={classes.button}
               disabled={submitting || pristine}
+              loading={submitting}
             >
               Book
             </ButtonField>

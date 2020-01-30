@@ -27,6 +27,9 @@ const styles = {
 const Book = ({ classes }) => {
   const dispatch = useDispatch();
 
+  async function fetchRooms() {
+    return dispatch.rooms.getRoomsAvailability({});
+  }
   const onSubmit = useCallback(async values => {
     const { name, date, startHour, endHour, room, userId } = values;
     const dateIni = new Date(date);
@@ -48,6 +51,11 @@ const Book = ({ classes }) => {
       roomId: room,
       authName: userId,
       eventName: name,
+    });
+    fetchRooms();
+
+    await dispatch.snackbar.openSnackbar({
+      message: 'Room booked succesfully',
     });
     return response;
   });

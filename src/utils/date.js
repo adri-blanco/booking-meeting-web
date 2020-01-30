@@ -8,7 +8,5 @@ export const parseTime = time => {
 };
 
 export const getDifferenceInMinutes = (startDate, endDate) => {
-  return Math.abs(
-    Math.round((startDate.getTime() - endDate.getTime()) / (1000 * 60))
-  );
+  return Math.round((startDate.getTime() - endDate.getTime()) / (1000 * 60));
 };

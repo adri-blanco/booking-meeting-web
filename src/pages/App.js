@@ -6,6 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import Book from '../components/Book/Book';
 import RoomsAvailability from '../components/ListBookings/RoomsAvailability';
 import MyBooking from '../components/MyBooking/MyBooking';
+import SnackbarDefault from '../reusable-components/snackbar/SnackBarDefault';
 
 const styles = {
   container: {
@@ -44,6 +45,7 @@ const App = ({ classes }) => {
   useEffect(() => {
     fetchData();
   }, []);
+
   return (
     <div className={classes.container}>
       <h2 className={classes.text}>Welcome to the Booking Meeting App</h2>
@@ -55,6 +57,7 @@ const App = ({ classes }) => {
           <MyBooking room={actualBooking} />
         </div>
       </div>
+      <SnackbarDefault />
     </div>
   );
 };

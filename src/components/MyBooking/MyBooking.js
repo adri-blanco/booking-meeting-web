@@ -37,9 +37,7 @@ const MyBooking = ({ classes, room }) => {
           {<MyBookProgress booking={actualBooking[0]} />}
         </>
       ) : (
-        <div className={classes.textHeader}>
-          There are no bookings available now
-        </div>
+        <div className={classes.textHeader} />
       )}
     </div>
   );
