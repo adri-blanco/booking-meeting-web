@@ -62,7 +62,7 @@ const App = ({ classes }) => {
         <Divider orientation='vertical' />
         <div className={classes.rightContainer}>
           <RoomsAvailability />
-          <MyBooking room={actualBookingRoom} />
+          <MyBooking room={actualBookingRoom} onUpdate={fetchData} />
         </div>
       </div>
       <SnackbarDefault />

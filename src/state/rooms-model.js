@@ -61,5 +61,33 @@ export default {
       });
       return response;
     },
+    async extendTime(payload) {
+      const { bookingId, startHour, endHour, roomId } = payload;
+      const response = await RoomsService.bookUpdate({
+        bookingId,
+        startHour,
+        endHour: new Date(
+          new Date(endHour).getTime() + 15 * 60 * 1000
+        ).toISOString(),
+        roomId,
+      });
+      await dispatch.snackbar.openSnackbar({
+        message: 'Current booking extended 15 min',
+      });
+      return response;
+    },
+    async endBooking(payload) {
+      const { bookingId, startHour, roomId } = payload;
+      const response = await RoomsService.bookUpdate({
+        bookingId,
+        startHour,
+        endHour: new Date().toISOString(),
+        roomId,
+      });
+      await dispatch.snackbar.openSnackbar({
+        message: 'Current booking ended',
+      });
+      return response;
+    },
   }),
 };

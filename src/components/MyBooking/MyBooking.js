@@ -24,7 +24,7 @@ function getActualBooking(room) {
   }
   return {};
 }
-const MyBooking = ({ classes, room }) => {
+const MyBooking = ({ classes, room, onUpdate }) => {
   const actualBooking = getActualBooking(room);
   return (
     <div className={classes.container}>
@@ -34,7 +34,13 @@ const MyBooking = ({ classes, room }) => {
           <h3 className={classes.textHeader}>
             {`${room.name} - ${room.floor}`}
           </h3>
-          {<MyBookProgress booking={actualBooking[0]} />}
+          {
+            <MyBookProgress
+              booking={actualBooking[0]}
+              roomId={room.id}
+              onUpdate={onUpdate}
+            />
+          }
         </>
       ) : (
         <div className={classes.textHeader} />
@@ -46,10 +52,12 @@ const MyBooking = ({ classes, room }) => {
 MyBooking.propTypes = {
   classes: PropTypes.object.isRequired,
   room: PropTypes.object,
+  onUpdate: PropTypes.func,
 };
 
 MyBooking.defaultProps = {
   room: undefined,
+  onUpdate: () => {},
 };
 
 export default withStyles(styles)(MyBooking);

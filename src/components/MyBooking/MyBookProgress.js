@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { useDispatch } from 'react-redux';
 import { lighten, withStyles } from '@material-ui/core/styles';
 import { parseTime, getDifferenceInMinutes } from '../../utils/date';
 import ButtonField from '../../reusable-components/buttons/ButtonField';
@@ -16,6 +17,16 @@ const styles = {
   infoContainer: {
     display: 'flex',
     flexDirection: 'column',
+  },
+  buttons: {
+    marginTop: '16px',
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+  },
+  button: {
+    width: '150px',
+    padding: '8px',
   },
 };
 
@@ -37,19 +48,41 @@ const getPercentComplete = (startDate, endDate) => {
   return normalizedValue;
 };
 
-const MyBookProgress = ({ classes, booking }) => {
+const MyBookProgress = ({ classes, booking, roomId, onUpdate }) => {
+  const dispatch = useDispatch();
   const startDate = new Date(booking.startTime);
   const endDate = new Date(booking.endTime);
   const [extending, setExtending] = useState(false);
+  const [ending, setEnding] = useState(false);
   const [timeLeft, setTimeLeft] = useState(
     getDifferenceInMinutes(endDate, new Date())
   );
-  const onClick = () => {
+  const onExtend = async () => {
     setExtending(true);
+    await dispatch.rooms.extendTime({
+      bookingId: booking.bookingId,
+      startHour: startDate.toISOString(),
+      endHour: endDate.toISOString(),
+      roomId,
+    });
+    onUpdate({ type: 'extend' });
+    setExtending(false);
   };
+  const onEnd = async () => {
+    setEnding(true);
+    await dispatch.rooms.endBooking({
+      bookingId: booking.bookingId,
+      startHour: startDate.toISOString(),
+      endHour: endDate.toISOString(),
+      roomId,
+    });
+    onUpdate({ type: 'end' });
+    setEnding(false);
+  };
+
   useEffect(() => {
     setTimeLeft(getDifferenceInMinutes(endDate, new Date()));
-  }, []);
+  }, [endDate]);
   return (
     <div className={classes.container}>
       <div className={classes.background}>
@@ -70,19 +103,34 @@ const MyBookProgress = ({ classes, booking }) => {
                   ? `You have ${timeLeft} minutes left`
                   : 'This booking has expired'}
               </span>
-              <ButtonField
-                variant='contained'
-                type='button'
-                color='primary'
-                disabled={extending}
-                loading={extending}
-                onClick={onClick}
-              >
-                +15 minutes
-              </ButtonField>
             </div>
           )}
           {endDate && <span>{parseTime(endDate)}</span>}
+        </div>
+        <div className={classes.buttons}>
+          <ButtonField
+            variant='contained'
+            type='button'
+            color='primary'
+            disabled={extending}
+            loading={extending}
+            onClick={onExtend}
+            className={classes.button}
+          >
+            +15 minutes
+          </ButtonField>
+
+          <ButtonField
+            variant='contained'
+            type='button'
+            color='secondary'
+            disabled={ending}
+            loading={ending}
+            onClick={onEnd}
+            className={classes.button}
+          >
+            END
+          </ButtonField>
         </div>
       </div>
     </div>
@@ -92,10 +140,14 @@ const MyBookProgress = ({ classes, booking }) => {
 MyBookProgress.propTypes = {
   classes: PropTypes.object.isRequired,
   booking: PropTypes.object,
+  roomId: PropTypes.number,
+  onUpdate: PropTypes.func,
 };
 
 MyBookProgress.defaultProps = {
   booking: {},
+  roomId: '',
+  onUpdate: () => {},
 };
 
 export default withStyles(styles)(MyBookProgress);

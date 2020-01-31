@@ -29,6 +29,17 @@ export default {
     return response.data;
   },
 
+  async bookUpdate({ bookingId, startHour, endHour, roomId }) {
+    const response = await axios.put('/book', {
+      bookingId,
+      room: roomId,
+      startTime: startHour,
+      endTime: endHour,
+    });
+
+    return response.data;
+  },
+
   async getRoomsAvailability({ when }) {
     const response = await this.getRooms();
     return response.map(el => ({
