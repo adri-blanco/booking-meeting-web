@@ -23,7 +23,6 @@ export default function SnackbarDefault() {
 
   useEffect(() => {
     setOpen(snackbar.message !== '');
-    // setOpen(true);
   }, [snackbar.message]);
 
   const handleClose = async (event, reason) => {
