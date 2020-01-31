@@ -59,23 +59,37 @@ const MyBookProgress = ({ classes, booking, roomId, onUpdate }) => {
   );
   const onExtend = async () => {
     setExtending(true);
-    await dispatch.rooms.extendTime({
-      bookingId: booking.bookingId,
-      startHour: startDate.toISOString(),
-      endHour: endDate.toISOString(),
-      roomId,
-    });
+    try {
+      await dispatch.rooms.extendTime({
+        bookingId: booking.bookingId,
+        startHour: startDate.toISOString(),
+        endHour: endDate.toISOString(),
+        roomId,
+      });
+    } catch (error) {
+      await dispatch.snackbar.openSnackbar({
+        message: 'Oops, something went wrong, cannot extend your booking',
+        type: 'danger',
+      });
+    }
     onUpdate({ type: 'extend' });
     setExtending(false);
   };
   const onEnd = async () => {
     setEnding(true);
-    await dispatch.rooms.endBooking({
-      bookingId: booking.bookingId,
-      startHour: startDate.toISOString(),
-      endHour: endDate.toISOString(),
-      roomId,
-    });
+    try {
+      await dispatch.rooms.endBooking({
+        bookingId: booking.bookingId,
+        startHour: startDate.toISOString(),
+        endHour: endDate.toISOString(),
+        roomId,
+      });
+    } catch (error) {
+      await dispatch.snackbar.openSnackbar({
+        message: 'Oops, something went wrong, cannot end your booking',
+        type: 'danger',
+      });
+    }
     onUpdate({ type: 'end' });
     setEnding(false);
   };

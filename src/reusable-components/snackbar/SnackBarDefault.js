@@ -1,16 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import Snackbar from '@material-ui/core/Snackbar';
+import { Snackbar, SnackbarContent } from '@material-ui/core';
+
+function getColorByType(type) {
+  switch (type) {
+    case 'normal':
+      return 'black';
+    case 'alert':
+      return 'orange';
+    case 'danger':
+      return 'crimson';
+    default:
+      return 'black';
+  }
+}
 
 export default function SnackbarDefault() {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
-  const message = useSelector(state => state.snackbar.message);
+  const snackbar = useSelector(state => state.snackbar);
 
   useEffect(() => {
-    setOpen(message !== '');
-  }, [message]);
+    setOpen(snackbar.message !== '');
+    // setOpen(true);
+  }, [snackbar.message]);
 
   const handleClose = async (event, reason) => {
     if (reason === 'clickaway') {
@@ -30,7 +44,13 @@ export default function SnackbarDefault() {
       open={open}
       autoHideDuration={6000}
       onClose={handleClose}
-      message={message}
-    />
+    >
+      <SnackbarContent
+        style={{
+          backgroundColor: getColorByType(snackbar.type),
+        }}
+        message={snackbar.message}
+      />
+    </Snackbar>
   );
 }

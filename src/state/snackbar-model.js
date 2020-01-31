@@ -1,6 +1,7 @@
 export default {
   state: {
     message: '',
+    type: '',
   },
   reducers: {
     setMessage(state, message) {
@@ -9,10 +10,17 @@ export default {
         message,
       };
     },
+    setType(state, type) {
+      return {
+        ...state,
+        type,
+      };
+    },
   },
   effects: dispatch => ({
     async openSnackbar(payload) {
       dispatch.snackbar.setMessage(payload.message);
+      dispatch.snackbar.setType(payload.type || 'normal');
     },
   }),
 };

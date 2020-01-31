@@ -41,20 +41,29 @@ const Book = ({ classes, onSubmit }) => {
     );
     dateEnd.setHours(endHourDate.getHours(), endHourDate.getMinutes(), 0, 0);
     setLastUserUsed(userId);
-    const response = await dispatch.rooms.bookRoom({
-      authId: userId,
-      startHour: dateIni.toISOString(),
-      endHour: dateEnd.toISOString(),
-      roomId: room,
-      authName: userId,
-      eventName: name,
-    });
+    try {
+      const response = await dispatch.rooms.bookRoom({
+        authId: userId,
+        startHour: dateIni.toISOString(),
+        endHour: dateEnd.toISOString(),
+        roomId: room,
+        authName: userId,
+        eventName: name,
+      });
 
-    onSubmit();
-    await dispatch.snackbar.openSnackbar({
-      message: 'Room booked succesfully',
-    });
-    return response;
+      onSubmit();
+      await dispatch.snackbar.openSnackbar({
+        message: 'Room booked succesfully',
+      });
+      return response;
+    } catch (error) {
+      await dispatch.snackbar.openSnackbar({
+        message:
+          'Oops, something went wrong, check that the room is available or you have an internet connection',
+        type: 'danger',
+      });
+      return null;
+    }
   });
 
   const rooms = useSelector(state => state.rooms.rooms);

@@ -38,11 +38,18 @@ const App = ({ classes }) => {
   const dispatch = useDispatch();
   const [actualBookingRoom, setActualBookingRoom] = useState(undefined);
   async function fetchData() {
-    await dispatch.rooms.getRoomsAvailability({});
-    if (getLastUserUsed()) {
-      setActualBookingRoom(
-        await dispatch.rooms.getActualBooking({ user: getLastUserUsed() })
-      );
+    try {
+      await dispatch.rooms.getRoomsAvailability({});
+      if (getLastUserUsed()) {
+        setActualBookingRoom(
+          await dispatch.rooms.getActualBooking({ user: getLastUserUsed() })
+        );
+      }
+    } catch (error) {
+      await dispatch.snackbar.openSnackbar({
+        message: 'Oops, something went wrong, no data available',
+        type: 'danger',
+      });
     }
   }
 
