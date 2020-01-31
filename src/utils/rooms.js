@@ -27,12 +27,14 @@ export const isRoomAvailable = (room, when = Date.now()) => {
       isAvailable: room.availability,
       time: actualValue && actualValue.startTime,
       owner: actualValue && actualValue.owner,
+      meetingName: actualValue && actualValue.name,
     };
   }
   return {
     isAvailable: room.availability,
     time: actualValue && actualValue.endTime,
     owner: actualValue && actualValue.owner,
+    meetingName: actualValue && actualValue.name,
   };
 };
 

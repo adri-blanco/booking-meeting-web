@@ -91,7 +91,6 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
               label='Room'
               text='Room'
               options={parseRooms(rooms)}
-              required
             />
           </div>
           <div className={classes.field}>

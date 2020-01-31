@@ -31,7 +31,6 @@ export default {
 
   async getRoomsAvailability({ when }) {
     const response = await this.getRooms();
-
     return response.map(el => ({
       id: el.id,
       name: el.name,

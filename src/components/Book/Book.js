@@ -24,13 +24,10 @@ const styles = {
   },
 };
 
-const Book = ({ classes }) => {
+const Book = ({ classes, onSubmit }) => {
   const dispatch = useDispatch();
 
-  async function fetchRooms() {
-    return dispatch.rooms.getRoomsAvailability({});
-  }
-  const onSubmit = useCallback(async values => {
+  const handleSubmit = useCallback(async values => {
     const { name, date, startHour, endHour, room, userId } = values;
     const dateIni = new Date(date);
     const startHourDate = new Date(startHour);
@@ -52,8 +49,8 @@ const Book = ({ classes }) => {
       authName: userId,
       eventName: name,
     });
-    fetchRooms();
 
+    onSubmit();
     await dispatch.snackbar.openSnackbar({
       message: 'Room booked succesfully',
     });
@@ -66,7 +63,7 @@ const Book = ({ classes }) => {
     <div className={classes.container}>
       <div className={classes.innerContainer}>
         <h4 className={classes.text}>Book a room</h4>
-        <BookForm rooms={rooms} onSubmit={onSubmit} />
+        <BookForm rooms={rooms} onSubmit={handleSubmit} />
       </div>
     </div>
   );
@@ -74,8 +71,11 @@ const Book = ({ classes }) => {
 
 Book.propTypes = {
   classes: PropTypes.object.isRequired,
+  onSubmit: PropTypes.func,
 };
 
-Book.defaultProps = {};
+Book.defaultProps = {
+  onSubmit: () => {},
+};
 
 export default withStyles(styles)(Book);

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
 import { useSelector } from 'react-redux';
@@ -8,7 +8,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import { dispatch } from '../../state/store';
 import AvailabilityMarker from './AvailabilityMarker';
 
 const styles = {
@@ -24,14 +23,6 @@ const styles = {
 };
 
 const RoomsAvailability = ({ classes }) => {
-  async function fetchRooms() {
-    return dispatch.rooms.getRoomsAvailability({});
-  }
-
-  useEffect(() => {
-    fetchRooms();
-  }, []);
-
   const rooms = useSelector(state => state.rooms.rooms);
   return (
     <div className={classes.container}>
@@ -52,6 +43,7 @@ const RoomsAvailability = ({ classes }) => {
                     availability={row.isAvailable}
                     owner={row.owner}
                     time={row.time}
+                    name={row.meetingName}
                   />
                 </TableCell>
                 <TableCell component='th' scope='row'>

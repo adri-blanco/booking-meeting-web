@@ -48,13 +48,7 @@ const MyBookProgress = ({ classes, booking }) => {
     setExtending(true);
   };
   useEffect(() => {
-    const timer = setInterval(() => {
-      const currentTime = getDifferenceInMinutes(endDate, new Date());
-      setTimeLeft(currentTime > 0 ? currentTime : 0);
-    }, 60000);
-    return () => {
-      clearInterval(timer);
-    };
+    setTimeLeft(getDifferenceInMinutes(endDate, new Date()));
   }, []);
   return (
     <div className={classes.container}>
