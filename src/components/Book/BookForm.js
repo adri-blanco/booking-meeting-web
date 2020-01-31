@@ -68,6 +68,13 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
         startHour: getDefaultDate('start'),
         endHour: getDefaultDate('end'),
       }}
+      validate={values => {
+        const errors = {};
+        if (new Date(values.startHour) > new Date(values.endHour)) {
+          errors.endHour = 'End Hour should be after start';
+        }
+        return errors;
+      }}
       render={({ handleSubmit, form, submitting, pristine }) => (
         <form onSubmit={handleSubmit} className={classes.container}>
           <div className={classes.field}>
