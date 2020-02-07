@@ -1,6 +1,5 @@
 import axios from './axios';
 import { isRoomAvailable, getMyBookings } from '../utils/rooms';
-import serverData from '../constants/server-constants';
 
 export default {
   async getRooms() {
@@ -9,13 +8,8 @@ export default {
     return response.data;
   },
   async getAuthGroup({ authId }) {
-    const data = await axios.get(`/user/${authId}`, {
-      profileId: serverData.SERVER_PROFILE_ID,
-      authId,
-      isSecondaryAuth: false,
-      connectionName: '',
-    });
-    return data.data;
+    const { data } = await axios.get(`/user/${authId}`);
+    return data;
   },
   async bookRoom({ authId, startHour, endHour, room, name }) {
     const response = await axios.post('/book', {
