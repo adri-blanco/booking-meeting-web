@@ -34,13 +34,11 @@ const MyBooking = ({ classes, room, onUpdate }) => {
           <h3 className={classes.textHeader}>
             {`${room.name} - ${room.floor}`}
           </h3>
-          {
-            <MyBookProgress
-              booking={actualBooking[0]}
-              roomId={room.id}
-              onUpdate={onUpdate}
-            />
-          }
+          <MyBookProgress
+            booking={actualBooking[0]}
+            roomId={room.id}
+            onUpdate={onUpdate}
+          />
         </>
       ) : (
         <div className={classes.textHeader} />

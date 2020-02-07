@@ -22,12 +22,6 @@ export default {
       const rooms = await RoomsService.getRoomsAvailability({ when });
       dispatch.rooms.setRooms(rooms);
     },
-    async getMyBookings({ user }) {
-      const myBookings = await RoomsService.getMyBookings({
-        authId: user,
-      });
-      return myBookings;
-    },
     async getActualBooking({ user }) {
       const myBookings = await RoomsService.getMyBookings({
         authId: user,
@@ -78,31 +72,43 @@ export default {
     },
     async extendTime(payload) {
       const { bookingId, startHour, endHour, roomId } = payload;
-      const response = await RoomsService.bookUpdate({
-        bookingId,
-        startHour,
-        endHour: new Date(
-          new Date(endHour).getTime() + 15 * 60 * 1000
-        ).toISOString(),
-        roomId,
-      });
-      await dispatch.snackbar.openSnackbar({
-        message: 'Current booking extended 15 min',
-      });
-      return response;
+      try {
+        await RoomsService.bookUpdate({
+          bookingId,
+          startHour,
+          endHour: new Date(
+            new Date(endHour).getTime() + 15 * 60 * 1000
+          ).toISOString(),
+          roomId,
+        });
+        await dispatch.snackbar.openSnackbar({
+          message: 'Current booking extended 15 min',
+        });
+      } catch (err) {
+        await dispatch.snackbar.openSnackbar({
+          message: 'Oops, something went wrong, cannot extend your booking',
+          type: 'danger',
+        });
+      }
     },
     async endBooking(payload) {
       const { bookingId, startHour, roomId } = payload;
-      const response = await RoomsService.bookUpdate({
-        bookingId,
-        startHour,
-        endHour: new Date().toISOString(),
-        roomId,
-      });
-      await dispatch.snackbar.openSnackbar({
-        message: 'Current booking ended',
-      });
-      return response;
+      try {
+        await RoomsService.bookUpdate({
+          bookingId,
+          startHour,
+          endHour: new Date().toISOString(),
+          roomId,
+        });
+        await dispatch.snackbar.openSnackbar({
+          message: 'Current booking ended',
+        });
+      } catch (err) {
+        await dispatch.snackbar.openSnackbar({
+          message: 'Oops, something went wrong, cannot end your booking',
+          type: 'danger',
+        });
+      }
     },
   }),
 };

@@ -60,7 +60,7 @@ const App = ({ classes }) => {
     return () => {
       clearInterval(timer);
     };
-  }, [fetchData]);
+  }, []);
 
   return (
     <div className={classes.container}>
