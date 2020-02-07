@@ -22,17 +22,12 @@ export const getRoomAvailabilityInfo = (room, when = Date.now()) => {
     }
     return accumulator;
   }, {});
-  if (room.availability) {
-    return {
-      isAvailable: room.availability,
-      time: actualValue && actualValue.startTime,
-      owner: actualValue && actualValue.owner,
-      meetingName: actualValue && actualValue.name,
-    };
-  }
   return {
     isAvailable: room.availability,
-    time: actualValue && actualValue.endTime,
+    time:
+      room.availability && actualValue
+        ? actualValue.startTime
+        : actualValue.endTime,
     owner: actualValue && actualValue.owner,
     meetingName: actualValue && actualValue.name,
   };
