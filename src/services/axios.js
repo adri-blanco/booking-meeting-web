@@ -1,10 +1,10 @@
 import axios from 'axios';
 
-if (!process.env.BACKEND_URL) {
+if (!process.env.REACT_APP_BACKEND_URL) {
   throw new Error('Env vars not setted propperly.');
 }
 
-const baseURL = process.env.BACKEND_URL;
+const baseURL = process.env.REACT_APP_BACKEND_URL;
 
 const axiosInstance = axios.create({
   baseURL,

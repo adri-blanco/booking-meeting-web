@@ -1,37 +1,84 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import withStyles from 'react-jss';
-import { Provider } from 'react-redux';
-import Book from '../components/Book';
-import RoomsAvailability from '../components/RoomsAvailability';
-import store from '../state/store';
+import { withStyles } from '@material-ui/core/styles';
+import { useDispatch } from 'react-redux';
+import Divider from '@material-ui/core/Divider';
+import Book from '../components/Book/Book';
+import RoomsAvailability from '../components/ListBookings/RoomsAvailability';
+import MyBooking from '../components/MyBooking/MyBooking';
+import Snackbar from '../reusable-components/snackbar/SnackBar';
+import { getLastUserUsed } from '../utils/localStorage';
 
 const styles = {
   container: {
-    width: '100vw',
     display: 'flex',
     flexFlow: 'column',
     alignContent: 'center',
     justifyContent: 'center',
-    margin: '10px',
+    width: '100vw',
+    height: '100vh',
   },
   contentContainer: {
     display: 'flex',
     justifyContent: 'space-around',
+    alignItems: 'center',
+  },
+  rightContainer: {
+    width: '60%',
+    marginLeft: '16px',
+    marginRight: '24px',
+  },
+  text: {
+    textAlign: 'center',
   },
 };
 
-const App = ({ classes }) => (
-  <Provider store={store}>
+const App = ({ classes }) => {
+  const dispatch = useDispatch();
+  const [currentBookingRoom, setCurrentBookingRoom] = useState(undefined);
+  async function fetchData() {
+    try {
+      await dispatch.rooms.setRoomsAvailability({});
+      if (getLastUserUsed()) {
+        setCurrentBookingRoom(
+          await dispatch.rooms.getCurrentBooking({ user: getLastUserUsed() })
+        );
+      }
+    } catch (error) {
+      await dispatch.snackbar.openSnackbar({
+        message: 'Oops, something went wrong, no data available',
+        type: 'danger',
+      });
+    }
+  }
+
+  useEffect(() => {
+    fetchData();
+    const timer = setInterval(() => {
+      fetchData();
+    }, 60000);
+    return () => {
+      clearInterval(timer);
+    };
+  }, []);
+
+  return (
     <div className={classes.container}>
-      <span>Booking Meeting Front</span>
+      <h2 className={classes.text}>Welcome to the Booking Meeting App</h2>
       <div className={classes.contentContainer}>
-        <Book />
-        <RoomsAvailability />
+        <Book onSubmit={fetchData} />
+        <Divider orientation='vertical' />
+        <div className={classes.rightContainer}>
+          <RoomsAvailability />
+          {currentBookingRoom && (
+            <MyBooking room={currentBookingRoom} onUpdate={fetchData} />
+          )}
+        </div>
       </div>
+      <Snackbar />
     </div>
-  </Provider>
-);
+  );
+};
 
 App.propTypes = {
   classes: PropTypes.object.isRequired,
