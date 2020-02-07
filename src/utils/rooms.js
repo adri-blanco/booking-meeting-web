@@ -1,6 +1,6 @@
 /* eslint-disable import/prefer-default-export */
 
-export const isRoomAvailable = (room, when = Date.now()) => {
+export const getRoomAvailabilityInfo = (room, when = Date.now()) => {
   const { meetings } = room;
 
   const actualValue = meetings.reduce((accumulator, actual) => {

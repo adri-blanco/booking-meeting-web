@@ -38,7 +38,7 @@ const App = ({ classes }) => {
   const [currentBookingRoom, setCurrentBookingRoom] = useState(undefined);
   async function fetchData() {
     try {
-      await dispatch.rooms.getRoomsAvailability({});
+      await dispatch.rooms.setRoomsAvailability({});
       if (getLastUserUsed()) {
         setCurrentBookingRoom(
           await dispatch.rooms.getCurrentBooking({ user: getLastUserUsed() })

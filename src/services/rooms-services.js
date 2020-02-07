@@ -1,5 +1,5 @@
 import axios from './axios';
-import { isRoomAvailable, getMyBookings } from '../utils/rooms';
+import { getRoomAvailabilityInfo, getMyBookings } from '../utils/rooms';
 
 export default {
   async getRooms() {
@@ -40,7 +40,7 @@ export default {
       id: el.id,
       name: el.name,
       floor: el.floor,
-      ...isRoomAvailable(el, when),
+      ...getRoomAvailabilityInfo(el, when),
     }));
   },
 
