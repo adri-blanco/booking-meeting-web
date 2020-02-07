@@ -1,113 +1,69 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import DateFnsUtils from '@date-io/date-fns';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import { makeStyles } from '@material-ui/core/styles';
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from '@material-ui/pickers';
-
-const useStyles = makeStyles({
-  checkboxContainer: {
-    marginBottom: '24px',
-  },
-  textLabel: {
-    fontSize: '16px',
-    color: '#67676c',
-    width: '100%',
-    marginTop: '0',
-  },
-  textInfoStyle: {
-    margin: 0,
-
-    fontSize: '12px',
-    color: '#a9a8ab',
-  },
-  datepicker: {
-    width: '100%',
-  },
-});
+import { Field } from 'react-final-form';
+import Datepicker from './DatePicker';
 
 const DatePickerField = ({
-  label,
   disabled,
-  className,
-  error,
-  showError,
-  onChange,
-  onBlur,
-  onFocus,
+  label,
+  name,
+  required,
   helperText,
-  value,
+  hide,
+  options,
+  className,
 }) => {
-  const classes = useStyles();
-  const [selectedDate, setSelectedDate] = useState(
-    value ? new Date(value) : null
-  );
-  const handleDateChange = date => {
-    setSelectedDate(new Date(date).toISOString());
-    onChange(new Date(date).toISOString());
-  };
+  function validate(checked) {
+    if (required && !checked) {
+      return 'required';
+    }
+    return null;
+  }
+
   return (
-    <div className={classnames(classes.checkboxContainer, className)}>
-      <MuiPickersUtilsProvider utils={DateFnsUtils}>
-        <KeyboardDatePicker
-          variant='inline'
-          inputVariant='outlined'
-          format='dd/MM/yyyy'
-          margin='normal'
+    <Field
+      name={name}
+      type='date'
+      render={({ input, meta }) => (
+        <Datepicker
+          onChange={input.onChange}
+          onBlur={input.onBlur}
+          onFocus={input.onFocus}
+          value={input.value}
           label={label}
-          onFocus={onFocus}
-          onBlur={onBlur}
           disabled={disabled}
-          value={selectedDate}
-          onChange={handleDateChange}
-          classes={{ root: classes.textLabel }}
+          showError={meta.touched && meta.error !== undefined}
+          error={meta.error}
+          helperText={helperText}
+          hide={hide}
+          options={options}
+          className={className}
         />
-      </MuiPickersUtilsProvider>
-      {!showError && helperText && (
-        <FormHelperText classes={{ root: classes.textInfoStyle }}>
-          {helperText}
-        </FormHelperText>
       )}
-      {showError && (
-        <FormHelperText
-          classes={{ root: classes.textInfoStyle }}
-          error={showError}
-        >
-          {error}
-        </FormHelperText>
-      )}
-    </div>
+      validate={!disabled ? validate : undefined}
+    />
   );
 };
 
 DatePickerField.propTypes = {
-  label: PropTypes.node,
   disabled: PropTypes.bool,
-  className: PropTypes.string,
-  error: PropTypes.string,
-  showError: PropTypes.bool,
+  label: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  required: PropTypes.bool,
   helperText: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  onChange: PropTypes.func,
-  onBlur: PropTypes.func,
-  onFocus: PropTypes.func,
-  value: PropTypes.oneOfType([PropTypes.object, PropTypes.string]),
+  hide: PropTypes.bool,
+  options: PropTypes.arrayOf(PropTypes.string),
+  className: PropTypes.string,
 };
 
 DatePickerField.defaultProps = {
-  label: '',
   disabled: false,
-  className: '',
-  error: undefined,
-  showError: false,
+  label: '',
+  required: false,
   helperText: undefined,
-  onChange: () => {},
-  onBlur: () => {},
-  onFocus: () => {},
-  value: undefined,
+  hide: false,
+  options: [],
+  className: '',
 };
 
 export default DatePickerField;

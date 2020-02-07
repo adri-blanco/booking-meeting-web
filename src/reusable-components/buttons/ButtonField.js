@@ -26,8 +26,7 @@ function ButtonField({
       onClick={onClick}
       type={type}
     >
-      {loading && <CircularProgress size='24px' />}
-      {!loading && children}
+      {loading ? <CircularProgress size='24px' /> : children}
     </Button>
   );
 }

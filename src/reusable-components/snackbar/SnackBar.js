@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Snackbar, SnackbarContent } from '@material-ui/core';
+import {
+  Snackbar as MaterialSnackbar,
+  SnackbarContent,
+} from '@material-ui/core';
 
 function getColorByType(type) {
   switch (type) {
@@ -15,7 +18,7 @@ function getColorByType(type) {
   }
 }
 
-export default function SnackbarDefault() {
+export default function Snackbar() {
   const [open, setOpen] = useState(false);
   const dispatch = useDispatch();
 
@@ -35,7 +38,7 @@ export default function SnackbarDefault() {
   };
 
   return (
-    <Snackbar
+    <MaterialSnackbar
       anchorOrigin={{
         vertical: 'bottom',
         horizontal: 'center',
@@ -50,6 +53,6 @@ export default function SnackbarDefault() {
         }}
         message={snackbar.message}
       />
-    </Snackbar>
+    </MaterialSnackbar>
   );
 }

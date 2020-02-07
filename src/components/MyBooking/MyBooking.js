@@ -16,11 +16,9 @@ const styles = {
 function getCurrentBooking(room) {
   const now = new Date();
   if (room) {
-    return room.meetings.filter(booking => {
-      return (
-        new Date(booking.startTime) <= now && new Date(booking.endTime) > now
-      );
-    })[0];
+    return room.meetings.filter(
+      booking => new Date(booking.startTime) <= now && new Date(booking.endTime) > now
+    )[0];
   }
   return {};
 }

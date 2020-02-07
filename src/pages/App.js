@@ -6,7 +6,7 @@ import Divider from '@material-ui/core/Divider';
 import Book from '../components/Book/Book';
 import RoomsAvailability from '../components/ListBookings/RoomsAvailability';
 import MyBooking from '../components/MyBooking/MyBooking';
-import SnackbarDefault from '../reusable-components/snackbar/SnackBarDefault';
+import Snackbar from '../reusable-components/snackbar/SnackBar';
 import { getLastUserUsed } from '../utils/localStorage';
 
 const styles = {
@@ -75,7 +75,7 @@ const App = ({ classes }) => {
           )}
         </div>
       </div>
-      <SnackbarDefault />
+      <Snackbar />
     </div>
   );
 };

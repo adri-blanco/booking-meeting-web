@@ -1,110 +1,85 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import TextField from '@material-ui/core/TextField';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-  textFieldContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginBottom: '28px',
-  },
-  textInput: {
-    fontSize: '16px',
-  },
-  textLabel: {
-    fontSize: '12px',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  spanLabel: {
-    flex: 1,
-  },
-});
+import { Field } from 'react-final-form';
+import TextField from './TextInput';
 
 const TextInputField = ({
-  label,
-  value,
   disabled,
-  className,
   placeholder,
-  error,
-  showError,
-  onChange,
-  onBlur,
-  onFocus,
-  hide,
+  label,
+  name,
+  required,
   helperText,
+  hide,
+  errorOnLive,
+  minLength,
+  maxLength,
 }) => {
-  const classes = useStyles();
-  const [inValue, setInValue] = useState(value);
-  function handleChange(e) {
-    setInValue(e.target.value);
-    onChange(e);
+  function validate(text) {
+    if (required && (!text || text === '')) {
+      return 'Required';
+    }
+    if (text && minLength && text.length < minLength) {
+      return `Need at least ${minLength} characters`;
+    }
+    if (text && maxLength && text.length > maxLength) {
+      return `Need as much ${maxLength} characters`;
+    }
+    return null;
   }
-  useEffect(() => {
-    setInValue(value);
-  }, [value]);
   return (
-    <div className={classnames(classes.textFieldContainer, className)}>
-      <TextField
-        classes={{ root: classes.textInput }}
-        value={inValue}
-        label={label}
-        variant='outlined'
-        disabled={disabled}
-        placeholder={placeholder}
-        error={showError}
-        onChange={handleChange}
-        onFocus={onFocus}
-        onBlur={onBlur}
-        type={hide ? 'password' : 'text'}
-      />
-      {!showError && helperText && (
-        <FormHelperText classes={{ root: classes.textLabel }}>
-          {helperText}
-        </FormHelperText>
-      )}
-      {showError && (
-        <FormHelperText classes={{ root: classes.textLabel }} error={showError}>
-          <span className={classes.spanLabel}>{error}</span>
-        </FormHelperText>
-      )}
-    </div>
+    <Field
+      name={name}
+      render={({ input, meta }) => {
+        return (
+          <TextField
+            name={input.name}
+            onChange={input.onChange}
+            onBlur={input.onBlur}
+            onFocus={input.onFocus}
+            value={input.value}
+            label={label}
+            disabled={disabled}
+            showError={
+              meta.touched &&
+              meta.error !== undefined &&
+              (errorOnLive || meta.submitFailed)
+            }
+            placeholder={placeholder}
+            error={meta.error}
+            helperText={helperText}
+            hide={hide}
+          />
+        );
+      }}
+      validate={!disabled ? validate : undefined}
+    />
   );
 };
 
 TextInputField.propTypes = {
-  value: PropTypes.string,
-  label: PropTypes.node,
   disabled: PropTypes.bool,
-  className: PropTypes.string,
-  hide: PropTypes.bool,
   placeholder: PropTypes.string,
-  error: PropTypes.string,
-  showError: PropTypes.bool,
+  label: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  required: PropTypes.bool,
   helperText: PropTypes.string,
-  onChange: PropTypes.func,
-  onBlur: PropTypes.func,
-  onFocus: PropTypes.func,
+  hide: PropTypes.bool,
+  errorOnLive: PropTypes.bool,
+  minLength: PropTypes.number,
+  maxLength: PropTypes.number,
 };
 
 TextInputField.defaultProps = {
-  value: '',
-  label: '',
   disabled: false,
-  className: '',
-  hide: false,
   placeholder: '',
-  error: undefined,
-  showError: false,
+  label: '',
+  required: false,
   helperText: undefined,
-  onChange: () => {},
-  onBlur: () => {},
-  onFocus: () => {},
+  hide: false,
+  errorOnLive: false,
+  minLength: undefined,
+  maxLength: undefined,
 };
 
 export default TextInputField;

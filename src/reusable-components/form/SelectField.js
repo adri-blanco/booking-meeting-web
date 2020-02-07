@@ -1,135 +1,68 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import classnames from 'classnames';
-import { Select, MenuItem } from '@material-ui/core';
-import InputLabel from '@material-ui/core/InputLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import { makeStyles } from '@material-ui/core/styles';
-
-const useStyles = makeStyles({
-  textFieldContainer: {
-    display: 'flex',
-    flexDirection: 'column',
-    marginBottom: '28px',
-  },
-  selectInput: {
-    fontSize: '16px',
-  },
-  textLabel: {
-    fontSize: '12px',
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  textStyle: {
-    fontSize: '14px',
-    color: '#a9a8ab',
-  },
-  spanLabel: {
-    flex: 1,
-  },
-  icon: {
-    width: '24px',
-    height: '24px',
-    marginRight: '12px',
-  },
-  optionContainer: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    verticalAlign: 'center',
-  },
-});
+import { Field } from 'react-final-form';
+import Select from './Select';
 
 const SelectField = ({
-  label,
-  value,
   disabled,
-  className,
-  error,
-  showError,
-  onChange,
-  onBlur,
-  onFocus,
+  label,
+  name,
+  required,
   helperText,
+  hide,
   options,
+  className,
 }) => {
-  const classes = useStyles();
-  const [selectValue, setSelectValue] = useState(value);
-  function handleChange(event) {
-    setSelectValue(event.target.value);
-    onChange(event);
+  function validate(text) {
+    if (required && (!text || text === '')) {
+      return 'required';
+    }
+    return null;
   }
-  useEffect(() => {
-    setSelectValue(value);
-  }, [value]);
-  return (
-    <div className={classnames(classes.textFieldContainer, className)}>
-      <InputLabel classes={{ root: classes.textLabel }} error={showError}>
-        {label}
-      </InputLabel>
 
-      <Select
-        classes={{ root: classes.selectInput }}
-        value={selectValue}
-        onChange={handleChange}
-        disabled={disabled}
-        variant='outlined'
-        onFocus={onFocus}
-        onBlur={onBlur}
-      >
-        {options.map(option => (
-          <MenuItem key={option.value} value={option.value}>
-            <div className={classes.optionContainer}>
-              {option.icon && (
-                <img src={option.icon} alt='icon' className={classes.icon} />
-              )}
-              <span>{option.text || option.value}</span>
-            </div>
-          </MenuItem>
-        ))}
-      </Select>
-      {!showError && helperText && (
-        <FormHelperText classes={{ root: classes.textLabel }}>
-          {helperText}
-        </FormHelperText>
+  return (
+    <Field
+      name={name}
+      render={({ input, meta }) => (
+        <Select
+          onChange={input.onChange}
+          onBlur={input.onBlur}
+          onFocus={input.onFocus}
+          value={input.value}
+          label={label}
+          disabled={disabled}
+          showError={meta.touched && meta.error !== undefined}
+          error={meta.error}
+          helperText={helperText}
+          hide={hide}
+          options={options}
+          className={className}
+        />
       )}
-      {showError && (
-        <FormHelperText classes={{ root: classes.textLabel }} error={showError}>
-          <span className={classes.spanLabel}>{error}</span>
-        </FormHelperText>
-      )}
-    </div>
+      validate={!disabled ? validate : undefined}
+    />
   );
 };
 
 SelectField.propTypes = {
-  value: PropTypes.string,
-  label: PropTypes.node,
   disabled: PropTypes.bool,
-  className: PropTypes.string,
-  error: PropTypes.string,
-  showError: PropTypes.bool,
+  label: PropTypes.string,
+  name: PropTypes.string.isRequired,
+  required: PropTypes.bool,
   helperText: PropTypes.string,
+  hide: PropTypes.bool,
   options: PropTypes.arrayOf(PropTypes.object),
-  onChange: PropTypes.func,
-  onBlur: PropTypes.func,
-  onFocus: PropTypes.func,
+  className: PropTypes.string,
 };
 
 SelectField.defaultProps = {
-  value: '',
-  label: '',
   disabled: false,
-  className: '',
-  error: undefined,
-  showError: false,
+  label: '',
+  required: false,
   helperText: undefined,
+  hide: false,
   options: [],
-  onChange: () => {},
-  onBlur: () => {},
-  onFocus: () => {},
+  className: '',
 };
 
 export default SelectField;

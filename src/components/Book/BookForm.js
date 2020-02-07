@@ -3,10 +3,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Form } from 'react-final-form';
 import { withStyles } from '@material-ui/core/styles';
-import DatePickerFieldDefault from '../../reusable-components/form/DatePickerFieldDefault';
-import HourPickerFieldDefault from '../../reusable-components/form/HourPickerFieldDefault';
-import SelectFieldDefault from '../../reusable-components/form/SelectFieldDefault';
-import TextInputFieldDefault from '../../reusable-components/form/TextInputFieldDefault';
+import DatePickerField from '../../reusable-components/form/DatePickerField';
+import HourPickerField from '../../reusable-components/form/HourPickerField';
+import SelectField from '../../reusable-components/form/SelectField';
+import TextInputField from '../../reusable-components/form/TextInputField';
 import ButtonField from '../../reusable-components/buttons/ButtonField';
 import { getLastUserUsed } from '../../utils/localStorage';
 
@@ -67,7 +67,7 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
       render={({ handleSubmit, form, submitting, pristine }) => (
         <form onSubmit={handleSubmit} className={classes.container}>
           <div className={classes.field}>
-            <TextInputFieldDefault
+            <TextInputField
               name='authId'
               label='User ID'
               placeholder='User ID'
@@ -75,14 +75,14 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
             />
           </div>
           <div className={classes.field}>
-            <TextInputFieldDefault
+            <TextInputField
               name='name'
               label='Meeting Name'
               placeholder='Meeting Name'
             />
           </div>
           <div className={classes.field}>
-            <SelectFieldDefault
+            <SelectField
               name='room'
               label='Room'
               text='Room'
@@ -90,21 +90,21 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
             />
           </div>
           <div className={classes.field}>
-            <DatePickerFieldDefault
+            <DatePickerField
               name='date'
               label='Room'
               className={classes.selectField}
             />
           </div>
           <div className={classes.field}>
-            <HourPickerFieldDefault
+            <HourPickerField
               name='startHour'
               label='Start Hour'
               className={classes.selectField}
             />
           </div>
           <div className={classes.field}>
-            <HourPickerFieldDefault
+            <HourPickerField
               name='endHour'
               label='End Hour'
               className={classes.selectField}
