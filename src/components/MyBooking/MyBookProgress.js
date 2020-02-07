@@ -42,9 +42,9 @@ const BorderLinearProgress = withStyles({
 })(LinearProgress);
 
 const getPercentComplete = (startDate, endDate) => {
-  const differenceTotal = endDate.getTime() - startDate.getTime();
-  const differenceActual = new Date().getTime() - startDate.getTime();
-  const normalizedValue = (differenceActual * 100) / differenceTotal;
+  const totalLength = endDate.getTime() - startDate.getTime();
+  const lengthFromNow = new Date().getTime() - startDate.getTime();
+  const normalizedValue = (lengthFromNow * 100) / totalLength;
   return normalizedValue;
 };
 
@@ -126,7 +126,7 @@ const MyBookProgress = ({ classes, booking, roomId, onUpdate }) => {
             variant='contained'
             type='button'
             color='primary'
-            disabled={extending}
+            disabled={extending || ending}
             loading={extending}
             onClick={onExtend}
             className={classes.button}
@@ -138,12 +138,12 @@ const MyBookProgress = ({ classes, booking, roomId, onUpdate }) => {
             variant='contained'
             type='button'
             color='secondary'
-            disabled={ending}
+            disabled={extending || ending}
             loading={ending}
             onClick={onEnd}
             className={classes.button}
           >
-            END
+            End
           </ButtonField>
         </div>
       </div>
