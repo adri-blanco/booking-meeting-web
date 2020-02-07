@@ -35,13 +35,13 @@ const styles = {
 
 const App = ({ classes }) => {
   const dispatch = useDispatch();
-  const [actualBookingRoom, setActualBookingRoom] = useState(undefined);
+  const [currentBookingRoom, setCurrentBookingRoom] = useState(undefined);
   async function fetchData() {
     try {
       await dispatch.rooms.getRoomsAvailability({});
       if (getLastUserUsed()) {
-        setActualBookingRoom(
-          await dispatch.rooms.getActualBooking({ user: getLastUserUsed() })
+        setCurrentBookingRoom(
+          await dispatch.rooms.getCurrentBooking({ user: getLastUserUsed() })
         );
       }
     } catch (error) {
@@ -70,7 +70,9 @@ const App = ({ classes }) => {
         <Divider orientation='vertical' />
         <div className={classes.rightContainer}>
           <RoomsAvailability />
-          <MyBooking room={actualBookingRoom} onUpdate={fetchData} />
+          {currentBookingRoom && (
+            <MyBooking room={currentBookingRoom} onUpdate={fetchData} />
+          )}
         </div>
       </div>
       <SnackbarDefault />

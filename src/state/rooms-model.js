@@ -22,7 +22,7 @@ export default {
       const rooms = await RoomsService.getRoomsAvailability({ when });
       dispatch.rooms.setRooms(rooms);
     },
-    async getActualBooking({ user }) {
+    async getCurrentBooking({ user }) {
       const myBookings = await RoomsService.getMyBookings({
         authId: user,
       });

@@ -13,36 +13,31 @@ const styles = {
   },
 };
 
-function getActualBooking(room) {
+function getCurrentBooking(room) {
   const now = new Date();
   if (room) {
     return room.meetings.filter(booking => {
       return (
         new Date(booking.startTime) <= now && new Date(booking.endTime) > now
       );
-    });
+    })[0];
   }
   return {};
 }
 const MyBooking = ({ classes, room, onUpdate }) => {
-  const actualBooking = getActualBooking(room);
+  const currentBooking = getCurrentBooking(room);
   return (
     <div className={classes.container}>
-      {room ? (
-        <>
-          <h4 className={classes.textHeader}>My current Booking</h4>
-          <h3 className={classes.textHeader}>
-            {`${room.name} - ${room.floor}`}
-          </h3>
-          <MyBookProgress
-            booking={actualBooking[0]}
-            roomId={room.id}
-            onUpdate={onUpdate}
-          />
-        </>
-      ) : (
-        <div className={classes.textHeader} />
-      )}
+      <h4 className={classes.textHeader}>My current Booking</h4>
+      <h4 className={classes.textHeader}>{currentBooking.name}</h4>
+      <div className={classes.textHeader}>
+        <span>{`${room.name} - ${room.floor}`}</span>
+      </div>
+      <MyBookProgress
+        booking={currentBooking}
+        roomId={room.id}
+        onUpdate={onUpdate}
+      />
     </div>
   );
 };
