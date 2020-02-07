@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { withStyles } from '@material-ui/core/styles';
 import { parseTime } from '../../utils/date';
 
@@ -8,12 +7,7 @@ const styles = {
   container: {
     borderRadius: '10px',
     padding: '10px',
-  },
-  available: {
-    backgroundColor: 'green',
-  },
-  unavailable: {
-    backgroundColor: 'red',
+    backgroundColor: ({ availability }) => (availability ? 'green' : 'red'),
   },
 };
 
@@ -34,11 +28,7 @@ function getTitleMessage(availability, owner, time, name) {
 const AvailabilityMarker = ({ classes, availability, owner, time, name }) => {
   return (
     <div
-      className={classNames(
-        classes.container,
-        { [classes.available]: availability },
-        { [classes.unavailable]: !availability }
-      )}
+      className={classes.container}
       title={getTitleMessage(availability, owner, time, name)}
     />
   );
