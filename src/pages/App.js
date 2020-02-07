@@ -17,7 +17,6 @@ const styles = {
     justifyContent: 'center',
     width: '100vw',
     height: '100vh',
-    // background: '#f7ddc6',
   },
   contentContainer: {
     display: 'flex',
@@ -61,7 +60,7 @@ const App = ({ classes }) => {
     return () => {
       clearInterval(timer);
     };
-  }, []);
+  }, [fetchData]);
 
   return (
     <div className={classes.container}>

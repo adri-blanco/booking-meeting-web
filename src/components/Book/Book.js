@@ -1,9 +1,8 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch, useSelector } from 'react-redux';
 import { withStyles } from '@material-ui/core/styles';
 import BookForm from './BookForm';
-import { setLastUserUsed } from '../../utils/localStorage';
 
 const styles = {
   container: {
@@ -26,53 +25,19 @@ const styles = {
 
 const Book = ({ classes, onSubmit }) => {
   const dispatch = useDispatch();
-
-  const handleSubmit = useCallback(async values => {
-    const { name, date, startHour, endHour, room, userId } = values;
-    const dateIni = new Date(date);
-    const startHourDate = new Date(startHour);
-    const dateEnd = new Date(date);
-    const endHourDate = new Date(endHour);
-    dateIni.setHours(
-      startHourDate.getHours(),
-      startHourDate.getMinutes(),
-      0,
-      0
-    );
-    dateEnd.setHours(endHourDate.getHours(), endHourDate.getMinutes(), 0, 0);
-    setLastUserUsed(userId);
-    try {
-      const response = await dispatch.rooms.bookRoom({
-        authId: userId,
-        startHour: dateIni.toISOString(),
-        endHour: dateEnd.toISOString(),
-        roomId: room,
-        authName: userId,
-        eventName: name,
-      });
-
-      onSubmit();
-      await dispatch.snackbar.openSnackbar({
-        message: 'Room booked succesfully',
-      });
-      return response;
-    } catch (error) {
-      await dispatch.snackbar.openSnackbar({
-        message:
-          'Oops, something went wrong, check that the room is available or you have an internet connection',
-        type: 'danger',
-      });
-      return null;
-    }
-  });
-
   const rooms = useSelector(state => state.rooms.rooms);
 
   return (
     <div className={classes.container}>
       <div className={classes.innerContainer}>
         <h4 className={classes.text}>Book a room</h4>
-        <BookForm rooms={rooms} onSubmit={handleSubmit} />
+        <BookForm
+          rooms={rooms}
+          onSubmit={async values => {
+            await dispatch.rooms.bookRoom(values, onSubmit);
+            await onSubmit();
+          }}
+        />
       </div>
     </div>
   );

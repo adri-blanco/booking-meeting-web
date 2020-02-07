@@ -17,13 +17,13 @@ export default {
     });
     return data.data;
   },
-  async bookRoom({ authId, startHour, endHour, roomId, eventName }) {
+  async bookRoom({ authId, startHour, endHour, room, name }) {
     const response = await axios.post('/book', {
       user: authId,
-      room: roomId,
+      room,
       startTime: startHour,
       endTime: endHour,
-      name: eventName,
+      name,
     });
 
     return response.data;

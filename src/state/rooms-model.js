@@ -1,4 +1,5 @@
 import RoomsService from '../services/rooms-services';
+import { setLastUserUsed } from '../utils/localStorage';
 
 export default {
   state: {
@@ -42,24 +43,38 @@ export default {
       }, {});
       return actualBooking;
     },
-    async bookRoom(payload) {
-      const {
-        authId,
-        startHour,
-        endHour,
-        roomId,
-        authName,
-        eventName,
-      } = payload;
-      const response = await RoomsService.bookRoom({
-        authId,
-        startHour,
-        endHour,
-        roomId,
-        authName,
-        eventName,
-      });
-      return response;
+    async bookRoom(values) {
+      const startHourDate = new Date(values.startHour);
+      const initialDate = new Date(values.date);
+      initialDate.setHours(
+        startHourDate.getHours(),
+        startHourDate.getMinutes(),
+        0,
+        0
+      );
+
+      const endDate = new Date(values.date);
+      const endHourDate = new Date(values.endHour);
+      endDate.setHours(endHourDate.getHours(), endHourDate.getMinutes(), 0, 0);
+      setLastUserUsed(values.authId);
+
+      try {
+        await RoomsService.bookRoom({
+          ...values,
+          startHour: initialDate.toISOString(),
+          endHour: endDate.toISOString(),
+        });
+
+        await dispatch.snackbar.openSnackbar({
+          message: 'Room booked succesfully',
+        });
+      } catch (err) {
+        await dispatch.snackbar.openSnackbar({
+          message:
+            'Oops, something went wrong, check that the room is available or you have an internet connection',
+          type: 'danger',
+        });
+      }
     },
     async extendTime(payload) {
       const { bookingId, startHour, endHour, roomId } = payload;

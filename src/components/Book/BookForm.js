@@ -63,7 +63,7 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
       onSubmit={onSubmit}
       initialValues={{
         name: 'Meeting',
-        userId: getLastUserUsed(),
+        authId: getLastUserUsed(),
         date: getDefaultDate(),
         startHour: getDefaultDate('start'),
         endHour: getDefaultDate('end'),
@@ -79,7 +79,7 @@ const BookForm = ({ onSubmit, rooms, classes }) => {
         <form onSubmit={handleSubmit} className={classes.container}>
           <div className={classes.field}>
             <TextInputFieldDefault
-              name='userId'
+              name='authId'
               label='User ID'
               placeholder='User ID'
               required
