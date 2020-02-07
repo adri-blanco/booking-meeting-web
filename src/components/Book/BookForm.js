@@ -45,28 +45,17 @@ function parseRooms(rooms) {
   }));
 }
 
-function getDefaultDate(type) {
-  const date = new Date();
-  switch (type) {
-    case 'start':
-      return date;
-    case 'end':
-      return new Date(date.getTime() + 15 * 60 * 1000);
-    default:
-      return date;
-  }
-}
-
 const BookForm = ({ onSubmit, rooms, classes }) => {
+  const now = new Date();
   return (
     <Form
       onSubmit={onSubmit}
       initialValues={{
         name: 'Meeting',
         authId: getLastUserUsed(),
-        date: getDefaultDate(),
-        startHour: getDefaultDate('start'),
-        endHour: getDefaultDate('end'),
+        date: now,
+        startHour: now,
+        endHour: new Date(now.getTime() + 15 * 60 * 1000),
       }}
       validate={values => {
         const errors = {};
