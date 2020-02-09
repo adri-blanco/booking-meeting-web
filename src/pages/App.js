@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Divider from '@material-ui/core/Divider';
 import Book from '../components/Book/Book';
 import RoomsAvailability from '../components/ListBookings/RoomsAvailability';
@@ -31,6 +31,15 @@ const styles = {
   text: {
     textAlign: 'center',
   },
+  errorTitle: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: '30px',
+  },
+  errorSpan: {
+    textAlign: 'center',
+    fontSize: '20px',
+  },
 };
 
 const App = ({ classes }) => {
@@ -45,8 +54,17 @@ const App = ({ classes }) => {
         );
       }
     } catch (error) {
+      if (
+        error.data.extra &&
+        error.data.extra.ERROR_CODE === 'BACKEND_CONNECTION'
+      ) {
+        const ERROR =
+          process.env.REACT_APP_GENERAL_ERROR_MESSAGE ||
+          'Error happened trying to connect with the backend.';
+        dispatch.global.setGeneralError(ERROR);
+      }
       await dispatch.snackbar.openSnackbar({
-        message: 'Oops, something went wrong, no data available',
+        message: error.data.message,
         type: 'danger',
       });
     }
@@ -61,6 +79,16 @@ const App = ({ classes }) => {
       clearInterval(timer);
     };
   }, []);
+
+  const generalError = useSelector(state => state.global.generalError);
+  if (generalError) {
+    return (
+      <div className={classes.container}>
+        <span className={classes.errorTitle}>Error connecting with the middleware</span>
+        <span className={classes.errorSpan}>{generalError}</span>
+      </div>
+    )
+  }
 
   return (
     <div className={classes.container}>
