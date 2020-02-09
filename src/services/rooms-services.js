@@ -3,35 +3,29 @@ import { getRoomAvailabilityInfo, getMyBookings } from '../utils/rooms';
 
 export default {
   async getRooms() {
-    const response = await axios.get('/rooms');
-
-    return response.data;
+    return axios.get('/rooms');
   },
   async getAuthGroup({ authId }) {
     const { data } = await axios.get(`/user/${authId}`);
     return data;
   },
   async bookRoom({ authId, startHour, endHour, room, name }) {
-    const response = await axios.post('/book', {
+    return axios.post('/book', {
       user: authId,
       room,
       startTime: startHour,
       endTime: endHour,
       name,
     });
-
-    return response.data;
   },
 
   async bookUpdate({ bookingId, startHour, endHour, roomId }) {
-    const response = await axios.put('/book', {
+    return axios.put('/book', {
       bookingId,
       room: roomId,
       startTime: startHour,
       endTime: endHour,
     });
-
-    return response.data;
   },
 
   async getRoomsAvailability({ when }) {
